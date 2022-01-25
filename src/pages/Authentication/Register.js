@@ -11,10 +11,14 @@ import {
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { registerUserThunk } from "../../redux/slices/auth";
 
 function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { handleChange, handleSubmit, errors, touched, handleBlur } = useFormik(
     {
       initialValues: {
@@ -33,7 +37,13 @@ function Register() {
           .required("Password is required"),
       }),
       onSubmit: (values) => {
-        console.log("ONSub", values);
+        Promise.resolve(dispatch(registerUserThunk(values)))
+          .then((res) => {
+            navigate("/login");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       },
     }
   );

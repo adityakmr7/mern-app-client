@@ -4,9 +4,18 @@ import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { authSelector, logoutUserThunk } from "../redux/slices/auth";
 
 export default function Layout() {
+  const { isAuthenticated } = useSelector(authSelector);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logoutUserThunk());
+    navigate("/login");
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -15,9 +24,17 @@ export default function Layout() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               News
             </Typography>
-            <Button color="inherit">
+            {isAuthenticated ? (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
               <Link to={"/login"}>Login</Link>
-            </Button>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
