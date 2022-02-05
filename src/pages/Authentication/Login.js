@@ -31,7 +31,7 @@ function Login() {
         password: Yup.string().required("Password is required"),
       }),
       onSubmit: (values) => {
-        Promise.resolve(dispatch(loginUserThunk(values)))
+        dispatch(loginUserThunk(values))
           .then((res) => {
             navigate("/");
           })

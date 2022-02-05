@@ -37,7 +37,7 @@ function Register() {
           .required("Password is required"),
       }),
       onSubmit: (values) => {
-        Promise.resolve(dispatch(registerUserThunk(values)))
+        dispatch(registerUserThunk(values))
           .then((res) => {
             navigate("/login");
           })
